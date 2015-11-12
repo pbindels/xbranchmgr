@@ -1,0 +1,125 @@
+@import "bootstrap";
+
+/*universal */
+
+html {
+  margin-left: 15px;
+  border-left-color: #fffffa;
+  overflow-y: scroll;
+}
+
+body {
+  padding-top: 60px;
+  margin-left: 10px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+}
+
+/*.center h1 {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+*/
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 15px;
+ // text-align: center;
+}
+
+h2 {
+  font-size: 1.7em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: #999;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* For Table Formatting */
+table.imagetable {
+  font-family: verdana,arial,sans-serif;
+  font-size:11px;
+  color:#333333;
+  border-width: 1px;
+  border-color: #999999;
+  border-collapse: collapse;
+}
+table.imagetable th {
+  background:#b5cfd2 url('cell-blue.jpg');
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: #999999;
+}
+table.imagetable td {
+  background:#dcddc0 url('cell-grey.jpg');
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: #999999;
+}
+table.imagetable .node:hover td {
+  //background:#cccccc  url('cell-blue.jpg');
+  background: #f79f81;
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: #999999;
+  border-collapse: collapse;
+  //font-weight: bold;
+}
+.current {
+  padding-right: 20px;
+  //padding-top: 30px;
+  background-repeat: no-repeat;
+  background-position: right center ;
+  background-color:    #b5cfd2;
+
+  &:hover {
+    //  color: #53A95E;
+    //    background-color: #F8FBEF;
+    background-color:    #b5cfd2;
+
+  }
+}

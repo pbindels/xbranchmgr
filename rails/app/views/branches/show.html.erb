@@ -1,0 +1,98 @@
+<!--
+<%= link_to 'Create A New Branch', new_branch_path, :class => "link_color" %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp; 
+-->
+<p xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"> <%= link_to "Show All Branches For Project #{@branch.project_name.upcase}", branches_path(:project_name => "#{@branch.project_name}"), :class => "link_color" %> <p>
+<!--
+&nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp; 
+<%= link_to "List Branches for Other Projects", get_branches_path , :class => "link_color"%> <br>
+-->
+
+<% if ( session[:repos_w_new_branch].length == session[:repos].length ) %>
+  <h2>** Branch already existed for all project repositories...*NO NEW* branches were created! **</h2>
+<% elsif session[:repos_w_new_branch].length >0 %>
+  <b>** Not all branches were created! The branch already existed on the following repositories: <br>
+  <% session[:repos_w_new_branch].each do | rep | %>
+     <%= rep %>
+  <% end %>
+  </b>
+<% end %>
+
+
+<% util = Util.new %>
+<% alerts,success,fail = util.validate_log("#{@log_root}/#{@branch.project_name}-#{@branch.branch_name}.log")%>
+
+
+<% if fail.length > 0%>
+  <p><b><h2><font color="red">
+    The following step(s) did *not* complete successfully.  Please check run results and alerts below.<br>
+  </font></h2>
+  <% fail.each do | k, v | %>
+    Step <%= k %>) &nbsp&nbsp <%= v %> <br>
+  <%end%>
+  </b></p>
+<% else %>
+  <p id="notice"><b><%= notice %></b></p>
+<%end%>
+
+<b>View branches at github</b> (https://github.com/okl/):<br>
+<% session[:repos].each do | repo |%>
+   &nbsp;&nbsp;&nbsp;
+  <%= link_to "Branch (#{@branch.branch_name}) : Repo (#{repo})", "https://github.com/okl/#{repo}/tree/#{@branch.branch_name}", :class => "link_color"%><br>
+<%end%>
+<p>
+	
+<b>View Jenkins Job at:</b> &nbsp;
+  <%= link_to "https://jenkins.newokl.com/jenkins/job/#{@branch.project_name}\-#{@branch.branch_name}/configure", "https://jenkins.newokl.com/jenkins/job/#{@branch.project_name}\-#{@branch.branch_name}/configure", :class => "link_color" %>
+<p>
+  <b>Project name:</b>
+  <%= @branch.project_name %>
+</p>
+
+<p>
+  <b>New Branch name:</b>
+  <%= @branch.branch_name %>
+</p>
+<p>
+  <b>Source Branch name:</b>
+  <%= @branch.source_branch %>
+</p>
+<p>
+  <b>Owner name:</b>
+  <%= @branch.owner_name %>
+</p>
+<!--
+<p>
+  <b>Repo name:</b>
+  <%= @branch.repo_name %>
+</p>
+-->
+<p>
+  <b>Date created:</b>
+  <%= @branch.date_created %>
+</p>
+<p>
+  <b>Creator:</b>
+  <%= @current_user %>
+</p>
+<p>If you have any issues, please contact NetOps: 
+ <%= mail_to("pbindels@onekingslane.com", "netops@onekingslane.com",:from => "pb", :subject => "Branchmgr Issue: ") %> </p>
+
+<p>
+	
+<p><b>Run Results:</b></p>
+<% fin = File.open("#{@log_root}/#{@branch.project_name}-#{@branch.branch_name}.log","r") %>
+   <% fin.each do |line| %>
+   <%= line %><br>
+<% end %>
+<br>
+<% if alerts.size > 0 %>
+  <p>
+  There were issues with the branch creation!  
+  The following messages were found: <br>
+  <% alerts.each do | k, v | %>
+	<%= k %>: <%= v %> <br>
+  <% end %> 
+<% end %>
+<br>
+  </body>
+</html>

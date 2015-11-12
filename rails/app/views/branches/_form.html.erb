@@ -1,0 +1,209 @@
+<!--
+<link rel="stylesheet" href="/assets/css3-progress-bar.css">
+<div class="bar_mortice rounded">
+     <div class="progress rounded" style="width: 0%;"></div>
+   </div>
+-->
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+<% Rails.logger.info("#{session[:tok]} is token in form.html") %>
+
+<%= form_for(@branch) do |f| %>
+  <% if @branch.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@branch.errors.count, "error") %> prohibited this branch from being saved:</h2>
+      <ul>
+      <% @branch.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% vals = `git ls-remote --heads git@github.com:okl/store.git | grep release_` %>
+
+  <% rels = Array.new %>
+  <% branches = vals.split(/\s+/)%>
+  <% rels.push("master")%>
+  <% branches.each do | br | %>
+    <% rels.push(br.gsub!(/.*\//,'')) if br =~ /refs/ %> 
+  <%end%>
+
+  <% envs = Rails.configuration.my_scope.dep_envs%>
+  <% projs = Rails.configuration.my_scope.projects %>
+  <% projs_sort = projs.keys[0..1] + projs.keys[2..-1].sort %>
+
+
+
+
+
+    <% if DeployEnv.where(reserved_by: @current_user).length == 0 %>
+        <b>You don't have a deployment environment reserved! <br>
+          If you would like to deploy, please reserve an environment first.</b>  <br>
+        <%= link_to 'Reserve An Environment', deploy_envs_path %>    <br>  <br>
+    <% end %>
+
+  <div class="field66">
+	<!--
+    <%= f.label :project_name, "", :class => "sub_label" %><br />
+    -->
+    <%= f.select :project_name, options_for_select(projs_sort),  { :prompt => "Select A Project"}, {:class => "sub_label"} %> </br><br>
+  </div>
+
+  <div class="chk_"></div>
+
+  <script>document.getElementsByClassName("sub_label")[0].focus()</script>
+
+  <div class="field676">
+    <%= f.label "New Branch Name", "", :class => "sub_label" %>
+    <%= f.text_field :branch_name %>
+  </div>
+  <br>
+
+  <div class="field677">
+    <%= f.label "Source Branch Name" , "", :class => "sub_label" %>
+    <%= f.text_field :source_branch, :value => "master", :class => "sub_label"%>
+  </div>
+  <br>
+
+  <div class="checkbox">
+	<%= f.check_box :hudson_job, {checked: true}%>
+	<%= f.label "Create Jenkins Job", "", :class => "sub_label"%><p>
+  </div>
+
+
+
+<!--
+  <div class="field99">
+    <%= f.select :dep_env_name, options_for_select(envs.keys),
+        {:prompt => "Select a Deployment Environment" , :class => "label_select"} %>
+    <%= f.label :dep_env_name, "", :class => "sub_label" %><br />
+  </div>
+-->
+
+  <div class="modal">
+
+  </div>
+
+  <div class=" box6">
+	<%= f.check_box :do_deploy, {checked: false}%> <b>Add auto-deployment to build job</b>
+	<!--<%= f.label "Add a Deployment Environment", "", :class => "sub_label"%> -->
+  </div>
+  <br>
+    <div class="linkto-container">
+    </div>
+    <div class="linkto-container2">
+    </div>
+
+
+  <% proj_res = Hash.new %>
+  <% projs_sort.each do |p| %>
+    <% proj_res[p] = DeployEnv.where(service: p, reserved_by: @current_user).map{|c| "#{c.name} - #{c.service} - #{c.reserved_by}"} %>
+  <% end %>
+
+
+    <div class="field99">
+      <%= select_tag(:dep_host_name, grouped_options_for_select(proj_res),
+                   {:prompt => "Select a Reservation (environment - service - owner)", :class => "label_select"})%>
+    </div>
+
+    <!--
+    <div class ="field99">
+      <%= f.select :dep_host_name,
+        grouped_options_for_select(proj_res),
+        {:prompt => "Select a Reservation (environment - service - owner)"}, {:class => "label_select"}%>
+    </div>
+    <br>
+   -->
+
+  <!--
+  <div class ="field99">
+    <%= f.select :dep_host_name,
+        options_for_select(DeployEnv.where(reserved_by: @current_user).map{|c| "#{c.name} - #{c.service} - #{c.reserved_by}"}),
+        {:prompt => "Select a Reservation (environment - service - owner)"}, {:class => "label_select"}%>
+  </div>
+  <br>  -->
+
+
+
+
+  <!--
+  <div class ="field99">
+    <%= select_tag(:dep_env_name, options_for_select(envs.keys), {:prompt => "Select a Deployment Environment", :class => "sub_label"})%>
+    <%= label_tag(:dep_env_name, "")%>
+  </div>
+
+  <div class ="field100">
+    <%= select_tag(:dep_host_name, grouped_options_for_select(envs), {:prompt => "Select a Host", :class => "sub_label"})%>
+    <%= label_tag(:dep_host_name, "")%>
+  </div>
+  <br>
+
+  <div class ="field100">
+    <%= select_tag(:dep_host_name, options_for_select(DeployEnv.all.map{|c| "#{c.name} - #{c.service} - #{c.reserved_by}"},
+      :disabled => DeployEnv.where(reserved: true).map{|c| c.name} ), {:prompt => "Select a Reservation", :class => "sub_label"})%>
+    <%= label_tag(:dep_host_name, "")%>
+  </div>
+  <br>
+  -->
+
+
+
+
+<!--
+  <table cellpadding=10 border="1" class="imagetable">
+    <caption>Reserve An Environment</caption>
+   <tr><td>Environment</td><td>Status</td><td>3 Days</td><td>7 Days</td><td>14 Days</td></tr>
+
+  <% DeployEnv.where(reserved: false).each do |env|%>
+    <tr>
+      <td>
+        <%= env.name %>
+      </td>
+      <td>Available</td>
+      <td>
+        <%=  radio_button_tag(:reservation_length, "3 days", false) %>
+      </td>
+      <td>
+        <%=  radio_button_tag(:reservation_length, "7 days", false) %>
+      </td>
+      <td>
+        <%=  radio_button_tag(:reservation_length, "14 days", false) %>
+      </td>
+    </tr>
+  <% end %>
+    </table>
+    <br>
+    <table cellpadding=10 border="1" class="imagetable">
+      <caption>Release An Environment</caption>
+      <tr><td>Release</td><td>Environment</td><td>Status</td></tr>
+    <% DeployEnv.where(reserved: true).each do |env|%>
+        <tr>
+          <td>
+            <%= radio_button_tag(:del_host_name, env.name, false) %> </td>
+          <td>
+            <%= label_tag(:del_host_name, env.name) %>
+          </td>
+          <td>
+            <%= "Reserved by \" #{env.reserved_by}\" until #{env.reserve_end}" %>
+          </td>
+        </tr>
+    <% end %>
+ </table>
+-->
+
+  <div class="mybutton2">
+    <%= f.submit  :id => 'submitButtonId2', :class => "sub_label"%>
+  </div>
+
+ 
+
+  <p>
+  <div id="spinner" class="spinner">
+    <img id="img-spinner" src="/assets/spinner.gif" alt="Loading"/> <br><b>Creating Branches...</b>
+  </div>
+
+<% end %>

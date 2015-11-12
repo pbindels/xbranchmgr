@@ -1,0 +1,18 @@
+<%= form_tag("/branches/delete_repository") do  %>
+
+    <div class="create_repo">
+      <%= label_tag :new_repo_name, "Delete Repository Name", :class => "sub_label" %><br />
+      <%= text_field_tag(:new_repo_name,"") %><br /><br>
+    </div>
+
+    <div class="delete_repo_button">
+      <%= submit_tag  "Delete Repo", :id => "submitDeleteRepoButton", :class => "sub_label"%>
+    </div>
+
+    <script>document.getElementsByClassName("sub_label")[0].focus()</script>
+
+    <div id="spinner" class="spinner">
+      <img id="img-spinner" src="/assets/spinner.gif" alt="Deleting Repository..."/>Deleting Repository...
+    </div>
+
+<% end %>

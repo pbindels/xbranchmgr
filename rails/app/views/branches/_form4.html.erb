@@ -1,0 +1,36 @@
+
+<%= form_tag("/branches/delete_branch_across_repos") do  %>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+
+<% projs = Rails.configuration.my_scope.projects %>
+    <% projs_sort = projs.keys[0..1] + projs.keys[2..-1].sort %>
+<%= @project_name %>
+
+  <div class="field_select_proj">
+	<%= label_tag :project_name, "" %><br />
+    <%= select_tag(:project_name, options_for_select(projs_sort), {:prompt => "Select A Project"}) %> <br><br>
+   </div>
+
+
+  <div class="field_enter_branch">
+	<%= label_tag :branch_name, "Branch Name", :class => "sub_label" %><br />
+    <%= text_field_tag(:branch_name,"") %><br /><br>
+  </div>
+
+  <div class="mybutton3">
+    <%= submit_tag  "Delete Branch", :id => "submitButtonId4", data: { confirm: "ALERT!! Are you sure you want to delete the entered branch FOREVER!?!?!?" } %>
+  </div>
+
+  <script>document.getElementsByClassName("sub_label")[0].focus()</script>
+
+  <div class="progressbar"></div>
+
+  <div id="spinner" class="spinner">
+    <img id="img-spinner" src="/assets/spinner.gif" alt="Deleting Branches..."/>Deleting branches...
+  </div>
+
+<% end %>

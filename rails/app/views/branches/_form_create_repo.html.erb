@@ -1,0 +1,22 @@
+<%= form_tag("/branches/create_new_repository") do  %>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+    <div class="create_repo">
+      <%= label_tag :new_repo_name, "New Repository Name", :class => "sub_label" %><br />
+      <%= text_field_tag(:new_repo_name,"") %><br /><br>
+    </div>
+
+    <div class="create_repo_button">
+      <%= submit_tag  "Create Repo", :id => "submitCreateRepoButton", :class => "sub_label"%>
+    </div>
+
+    <script>document.getElementsByClassName("sub_label")[0].focus()</script>
+
+    <div id="spinner" class="spinner">
+      <img id="img-spinner" src="/assets/spinner.gif" alt="Creating Repository..."/>Creating Repository...
+    </div>
+
+<% end %>

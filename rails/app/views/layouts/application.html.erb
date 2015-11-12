@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<html>
+<head>
+
+  <title>Branch Manager</title>
+  <table>
+  <tr>
+    <td>
+
+      <% all_tasks = Rails.configuration.my_scope.tasks %>
+      <% if @admins.include?(@current_user)%>
+          <% tasks = all_tasks.values.flatten%>
+      <% else %>
+          <% tasks = all_tasks["user"]%>
+      <% end %>
+
+      <%= form_tag("/branches/do_task") do  %>
+          <div class="field9">
+            <%= label_tag :task_name, "" %>
+            <%= select_tag(:task_name, options_for_select(tasks), {:prompt => "Select a New Task", :class => "select_label"}) %>
+          </div>
+    </td>
+
+  <td><img src='/assets/logo.jpg' hspace='1' vspace='2' border='0' alt='One Kings Lane'></td>
+  <td><h2>User:  <%= @current_user%>
+    <% if session[:tok] != nil %>
+        (Github Authenticated!)
+    <% else %>
+        <% Rails.logger.info("Not authorized with Github yet... Should have redirected to authorize in controller!!") %>
+    <%end%>
+  </h2> </td>
+
+  </tr>
+  </table>
+
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+
+</head>
+
+<body>
+      <br>
+      <div id="task_spinner" class="task_spinner">
+        <img id="img-spinner" src="/assets/spinner.gif" alt="Loading"/> <b>Switching Task...</b>
+      </div>
+   <%end%>
+
+  <% if ( system("git ls-remote --heads git@github.com:okl/netops_test.git") ) %>
+    <%= yield %>
+  <% else %>
+    <h2><font color="red"><%= "github is currently unavailable.  Please try again later." %></font></h2> 
+  <% end %>
+  <p>
+  <%= link_to 'Create Branch', new_branch_path, :class => "link_color" %> &nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp;
+  <%= link_to 'Find Branch', find_branch_path, :class => "link_color" %> &nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp;
+  <% if @admins.include?(@current_user)%>
+    <%= link_to 'Delete Branch', delete_branch_path, :class => "link_color" %> &nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp;
+  <% end %>
+  <%= link_to 'List Branches For Projects', get_branches_path, :class => "link_color" %> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+  <%= link_to 'List Branches For a Specific Repository', list_branches_path, :class => "link_color" %>
+  <p>
+
+</body>
+</html>

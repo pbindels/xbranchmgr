@@ -1,0 +1,46 @@
+
+<% if params[:project_name_box] %>
+  <% @allreps = @allprojs.values.flatten.uniq %>
+<%else%> 
+  <% @allreps = @allprojs[params[:project_name]]%>
+<%end%>
+
+<style>
+div.ex
+{
+	border-width: 3px;
+	border-color: #53A95E;
+}
+</style>
+
+<div class="ex">
+<b><font size=4> Searched across the following repos:</font></b>
+<% index = 0%>
+<% @allreps.sort.each do |val| %>
+  <%= val%> <%= ((index +=1) < @allreps.length) ? "," : ""%>
+<% end %>
+</div>
+
+<% rep_br2 = Array.new %>
+<% index = 0 %>
+<% util = Util.new %>
+
+<% rep_br2 = util.find_branch(@allreps,@branch_name,session[:tok])%>
+
+<% if rep_br2.length > 0 %>
+ <h2> The branch &quot;<%= @branch_name %>&quot; exists on the following repos: </h2>
+<% else %>
+<h2> The branch &quot;<%= @branch_name %>&quot; does not exist on any of the searched repos!</h2>
+<% end %>
+
+<p>
+<table>
+  <th align="left">Repo Name</th>
+  <% common = rep_br2 %>
+  <% common.sort {|a,b| a <=> b}.each do |val| %>
+    <tr>
+      <td><%= val %></td> 
+    </tr>
+  <% end %>
+</table>   
+<p>

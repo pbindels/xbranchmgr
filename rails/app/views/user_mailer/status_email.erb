@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h1>Branch &quot;<%= @branch_name %> &quot;  has been created by <%= @login %>!</h1>
+    <p>
+      A new branch has been created via the branchmgr tool: <p>
+      &nbsp;&nbsp;<b>Project Name:</b> <%= @project_name %> <br>
+      &nbsp;&nbsp;<b>Branch Name:</b> <%= @branch_name %> <br>
+      &nbsp;&nbsp;<b>Source Branch:</b> <%= @source_branch %> <br>
+      &nbsp;&nbsp;<b>Owner Name:</b> <%= @owner_name %> <br>
+	  &nbsp;&nbsp;<b>Creator:</b> <%= @login %>
+    </p>
+    <p>
+      <% if @repos_w_new_branch.length > 0 %>
+          <b>The branch already existed on the following repos:<br></b>
+          <% @repos_w_new_branch.each do |rep| %>
+              <%= rep %> <br>
+          <% end %>
+      <% end %>
+      <br>
+
+      <b>The branch now exists on *all* of the following repos: <%= @repos %> </b>
+
+      <p>
+      The branch was created at: <%=@url%>/new <br>
+      To see all branches: <%= @url %>.
+    </p>
+    <p>If you have any issues contact NetOps: <%= @user %>!</p>
+    <p><b>Run Results:</b></p>
+     <% fin = File.open("#{@log_root}/#{@project_name}-#{@branch_name}.log","r") %>
+     <% fin.each do |line| %>
+     <%= line %><br>
+    <% end %>
+  </body>
+</html>

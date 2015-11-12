@@ -1,0 +1,4 @@
+<br><b>here</b><br><%= @task_name%><br>
+<% if @task_name == /delete/%>
+  <% render '/branches/delete_branch.html.erb'%>
+<%end%>

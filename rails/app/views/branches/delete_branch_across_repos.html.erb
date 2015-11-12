@@ -1,0 +1,44 @@
+<b><font size=4> Searched across the following repos:</font></b>
+<% index = 0 %>
+<% @allprojs.values.flatten.uniq.sort.each do |val| %>
+    <%=val.strip%>
+    <% index += 1 %>
+    <% if index < @allprojs.values.flatten.uniq.length %>
+        <%=", "%>
+    <% end %>
+<% end %>
+<br><br>
+<table cellpadding=10 border="1" class="imagetable">
+<tr><th>Repo Name</th><th>Branch Name</th><th>Action</th></tr>
+
+<% if @branch_name.kind_of?(String) %>
+  <% @branch_name = { @branch_name => "1" } %>
+<% end %>
+
+<% @branch_name.each do |br,val| %>
+  <% next if val != "1" %>
+  <% @branch_name = br %>
+  <% @allreps = @allprojs.values.flatten.uniq %>
+
+  <% rep_br2 = Array.new %>
+  <% index = 0 %>
+  <% util = Util.new %>
+
+  <% rep_br2 = util.delete_branch(@allreps,@branch_name,session[:tok],@project_name)%>
+
+  <% if rep_br2.length > 0 %>
+  <% else %>
+    <h3> The branch &quot;<%= @branch_name %>&quot; does not exist on any of the searched repos!</h3>
+  <% end %>
+
+  <p>
+  <% common = rep_br2 %>
+  <% common.sort {|a,b| a <=> b}.each do |val| %>
+    <tr>
+      <td><%= val %></td><td><%=  @branch_name %></td><td><b>Deleted!</b></td>
+    </tr>
+  <% end %>
+  <p>
+<%end %>
+</table>
+<br><br>

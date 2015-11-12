@@ -1,0 +1,101 @@
+DEFAULTS: &DEFAULTS
+    projects: 
+      king: [ewok, store, frontoffice, backoffice, customersupport, assets, payment, library, framework, common, deployment, build]
+      partner_portal: [partner_portal, deployment, build]
+      backoffice_service: [backoffice_service, deployment, build]
+      netops: [ netops_test, git_common_test]
+      product: [product, deployment, build]
+      ab_test: [ab_test, deployment, build]
+      warehouse: [warehouse, deployment, build]
+      search: [search, deployment, build]
+      searchpro: [searchpro, deployment, build]
+      api_server: [api_server, deployment, build]
+      kamino: [kamino, deployment, build]
+      data_pipeline: [data_pipeline, deployment, build]
+      nexus: [nexus, deployment, build]
+      nexus_reloaded: [nexus_reloaded, deployment, build]
+      r2d2: [r2d2, deployment, build]
+      marketing: [marketing, deployment, build]
+      marketing_app: [marketing_app, deployment, build]
+      babar: [babar, deployment, build]
+      data_science: [data_science, deployment, build]
+      analytics: [bi, deployment, build]
+      catalog_service: [catalog_service, catalog_merch_models, deployment, build]
+      category_affinity: [category_affinity, deployment, build]
+      catalog_back_sync: [catalog_back_sync, deployment, build]
+      catalog_syncjob: [catalog_syncjob, deployment, build]
+      inventory_service: [inventory_service, deployment, build]
+      elysium: [elysium, deployment, build]
+      hattie: [hattie, deployment, build]
+      wordpress: [wordpress, deployment, build]
+      imp: [imp, deployment, build]
+      mobilerouter: [mobilerouter, deployment, build]
+      cerberus_service: [cerberus_service, deployment, build]
+      account_service: [account_service, deployment, build]
+      cart_service: [cart_service, deployment, build]
+      click_stream_service: [click_stream_service, deployment, build]
+      payment_service: [payment_service, deployment, build]
+      product_service: [product_service, deployment, build]
+      site_configuration_service: [site_configuration_service, deployment, build]
+      site_merchandising_service: [site_merchandising_service, deployment, build]
+      migration_job: [migration_job, catalog_merch_models, deployment, build]
+      qdeploy: [qdeploy, deployment, build]
+      catalog_merch_models: [catalog_merch_models, deployment, build]
+      availability_service: [availability_service, deployment, build]
+      security_poc_service: [security_poc_service, deployment, build]
+      test: [kamino]
+      
+    products: [king, partner_portal, product, db_test, warehouse, search, api_server, kamino, data_pipeline, nexus, nexus_reloaded, r2d2, marketing, data_science, analytics, catalog_service, netops, imp]
+   
+    jenkins_projects: [king, vendor_portal, product, ab_test, netops]
+    
+    tasks:
+      user: [Create a New Branch, Find a Branch Across Repos, List Branches for a Project,  List Branches For a Specific Repo]
+      admin: [ Delete an Existing Branch, Create a New Repository]
+    
+    tasks_orig: [Create a New Branch, Delete an Existing Branch, Find a Branch Across Repos, List Branches for a Project,  List Branches For a Specific Repo]
+
+    dep_envs:
+      qe: [qe01, qe02, qe03, qe04, qe05, qe06, qe07, qe08, qe09, qe10]
+      arch: [arch01, arch02]
+      cons: [cons01, cons02, cons03, cons04, cons05]
+      dramp: [dramp01, dramp02, dramp03]
+      entr: [entr01, entr02, entr03, entr04, entr05, entr06]
+      perf: [perf01, perf02, perf03, perf04]
+      mobl: [mobl01]
+      pers: [pers01, pers02]
+      stage: [stage01]
+     
+    admins: [pbindels, shu, justin, dgp, trivera, admin]
+
+development:
+  rails_root: "/Volumes/Work/dev/branchmgr/rails"
+  log_root: "/Volumes/Work/dev/branchmgr/rails/log"
+  build_root: "/tmp"
+  site_root: "http://localhost:3000"
+  site_root: "https://branchmgr.newokl.com"
+  client_id: 'eb69ee3fe8654eb25435' 
+  client_secret: 'eb7a2ca6b98c8790a23da5b61af553fdfce563b5'
+  notification_list: [pbindels@onekingslane.com]
+  <<: *DEFAULTS
+
+test:
+  rails_root: "/okl/branchmgr/qa/rails/current"
+  log_root: "/okl/branchmgr/qa/rails/current/log"
+  build_root: "/tmp"
+  site_root: "https://branchmgr.newokl.com"
+  client_id: 'eb69ee3fe8654eb25435' 
+  client_secret: 'eb7a2ca6b98c8790a23da5b61af553fdfce563b5'
+  notification_list: [pbindels@onekingslane.com]    
+  <<: *DEFAULTS
+
+production:
+  rails_root: "/okl/branchmgr/prod/rails/current"
+  log_root: "/okl/branchmgr/prod/rails/current/log"
+  build_root: "/okl"
+  site_root: "https://branchmgr.newokl.com"
+  client_id: 'eb69ee3fe8654eb25435' 
+  client_secret: 'eb7a2ca6b98c8790a23da5b61af553fdfce563b5'
+  site_root: "https://branchmgr.newokl.com"
+  notification_list: [pbindels@onekingslane.com, shu@onekingslane.com]
+  <<: *DEFAULTS

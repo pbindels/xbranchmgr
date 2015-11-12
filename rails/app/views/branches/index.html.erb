@@ -1,0 +1,61 @@
+
+<%= form_tag("/branches/delete_branch_across_repos") do  %>
+
+<% if @all_repos.length == 1 %>
+  <h2>Available branches on repository: <%= @repo_name.upcase %></h2> <br>
+  <!--  <h3>Branches on repository <%= @repo_name %>: &nbsp;&nbsp; </h3>  -->
+<% else %>
+  <h2>Available branches for project: <%= @project_name.upcase %></h2> <br>
+  <b>Valid branches that exist across all of the following repositories: &nbsp;&nbsp; </b>
+  <% index = 0 %>
+  <% @all_repos.each do | job | %>
+    <% index += 1 %>
+    <%= job %>
+    <% if index < @all_repos.length %>
+      ,
+    <% end %>
+  <% end %>
+<% end %>
+
+<% rep_br2 = Array.new %>
+<% util = Util.new %>
+<% rep_br2 = util.get_all_branches(@all_repos)%>
+
+<p>
+<table cellpadding=5>
+  <tr>
+  <% if @admins.include?(@current_user)%>
+    <td><b>Delete</b></td>
+  <% end %>
+  <td><b>Branch Name</b></td>
+
+  </tr>
+    <% common = rep_br2.inject(:&)%>
+    <% index = 0 %>
+    <% common.sort {|a,b| a <=> b}.each do |val| %>
+      <% index += 1 %>
+      <tr>
+        <% if @admins.include?(@current_user)%>
+          <td>
+            <div class="checkbox">
+              <%= check_box :branch_name, File.basename(val), checked: false%>
+              <%= label "Delete Branch", "", :class => "sub_label"%><p>
+            </div>
+          </td>
+        <% end %>
+        <td><%= File.basename(val) %></td>
+        <td>
+          <%= hidden_field_tag 'project_name', @project_name %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+  <p>
+    <% if @admins.include?(@current_user)%>
+      <div class= <%="mybutton#{index}"%> >
+        <%= submit_tag  "Delete", :id => "submitButtonId#{index}", data: { confirm:  "ALERT!!  Are you sure you want to delete the selected branches FOREVER!?!?"} %>
+      </div>
+    <% end %>
+  <% end %>
+<br>
+<br>

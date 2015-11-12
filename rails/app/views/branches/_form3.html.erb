@@ -1,0 +1,32 @@
+<%= form_tag("/branches/index") do  %>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+  <% projs = Rails.configuration.my_scope.projects %>
+  <% projs_sort = projs.keys[0..1] + projs.keys[2..-1].sort %>
+
+  <div class="field1">
+	<%= label_tag :project_name, "" %>
+    <%= select_tag(:project_name, options_for_select(projs_sort), {:prompt => "Select A Project", :class => "sub_label"}) %>
+
+   </div>
+
+  <div class ="field2">
+   <%= select_tag(:repo_name, grouped_options_for_select(projs),{:prompt => "Select A Repository", :class => "sub_label"})%>
+   <%= label_tag(:repo_name, "")%>
+  </div>
+
+  <br>
+  <div class="mybutton1">
+    <%= submit_tag  "List Branches" , {:id => "submitButtonId1", :class => "sub_label"} %>
+  </div>
+
+  <script>document.getElementsByClassName("sub_label")[0].focus()</script>
+
+  <div id="spinner1" class="spinner1">
+    <img id="img-spinner" src="/assets/spinner.gif" alt="Loading"/>Searching...
+  </div>
+
+<% end %>

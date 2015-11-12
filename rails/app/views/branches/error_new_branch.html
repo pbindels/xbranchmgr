@@ -1,0 +1,14 @@
+
+<b> The branch creation process was aborted for project: <%= proj %> </b> <p><p>
+<% var.each do |v| %>
+  <% a,b = v.split(/:/)%>
+<b> ERROR: </b> &nbsp;&nbsp;&quot;<%= b %>&quot;&nbsp;&nbsp; branch name already exists on <%= a %> repository! <p>
+<% end %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Date Attempted:</b>
+  <%= @branch.date_created %>
+</p>
+<b> Please contact Netops on how to proceed with the branch creation on the listed repo(s).  Thanks, NetOps! </b><p><p>

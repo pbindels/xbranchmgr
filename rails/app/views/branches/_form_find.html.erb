@@ -1,0 +1,35 @@
+
+<%= form_tag("/branches/find_branch_across_repos") do  %>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+  <% projs = Rails.configuration.my_scope.projects %>  
+
+  <div class="checkbox5">
+    <%= check_box_tag(:project_name_box, '', true,)%>  
+    <%= label_tag :project_name_box, "Search Across All Repos", :class => "sub_label"%>
+  </div>
+
+  <div class="field5">
+    <%= select_tag(:project_name, options_for_select(projs.keys), {:prompt => "Select A Project", :class => "sub_label"}) %><br>
+  </div><br>
+
+  <div class="field0">
+	<%= label_tag :branch_name, "Branch Name", :class => "sub_label" %><br />
+    <%= text_field_tag(:branch_name, "",:id =>"text_area") %><br /><br>
+  </div>
+
+  <div class="mybutton3">
+    <%= submit_tag  "Find Branch", :id => "submitButtonId5", :class => "sub_label" %>
+  </div>
+
+  <script>document.getElementById("text_area").focus()</script>
+						
+
+  <div id="spinner" class="spinner">
+    <img id="img-spinner" src="/assets/spinner.gif" alt="Searching for Branch..."/><b>Searching for branch across repos...</b>
+  </div>
+
+<% end %>
